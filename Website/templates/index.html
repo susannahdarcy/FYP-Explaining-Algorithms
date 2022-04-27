@@ -1,0 +1,311 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Feature Importance</title>
+{% endblock %}
+
+{% block body %}
+<section class="section background">
+  <h1 class="title">COMPAS Reoffender Classification Algorithm Exploration </h1>
+  <p>Within American judges, probation and parole officers, use Recidivism/Reoffender algorithms to assess a criminal
+    defendant’s likelihood to re-offend.
+    This COMPAS dataset is used to train these algorthims. It contaims the criminal history and demographics.
+    For this algorthim a postvie case signifies that the immate will likely reoffend and commit another crime.
+    The dataset also includes wether the immate does reoffend within 2 years.
+  </p>
+  <p class="mt-2">Below you will be able to alter an immates information, and algrothim parameters. The charts currently
+    show the
+    results and performace for the deafult input.
+    After altering the values, press the Classify Button to get the results and performace for the current input.
+  </p>
+  <section class="section">
+    <div class="content box">
+      <div class=" columns is-desktop">
+        <section class="column">
+          <h1 class="title">Feature Importance</h1>
+          <p>Alter the input data of an immate, and see how each variable impacts the classification</p>
+          <section class="columns">
+            <div class="column">
+              <form class="form">
+                <div class="field">
+                  <label class="label">Gender</label>
+                  <div class="control">
+                    <label class="radio">
+                      <input TYPE="Radio" Name="sex" Value="0" id="sex_male" checked>
+                      Male
+                    </label>
+                    <label class="radio">
+                      <input TYPE="Radio" Name="sex" Value="1" id="sex_female">
+                      Female
+                    </label>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Race</label>
+                  <div class="control">
+                    <label class="radio">
+                      <input TYPE="Radio" id="race_c" Name="race" Value="1" checked>
+                      Caucasian
+                    </label>
+                    <label class="radio">
+                      <input TYPE="Radio" id="race_aa" Name="race" Value="0">
+                      African American
+                    </label>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Is a Reoffender?</label>
+                  <div class="control">
+                    <label class="radio">
+                      <input TYPE="Radio" id="is_recid_y" name="is_recid" Value="1" checked>
+                      Yes
+                    </label>
+                    <label class="radio">
+                      <input TYPE="Radio" id="is_recid_n" name="is_recid" Value="0">
+                      No
+                    </label>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Is a Violent Reoffender?</label>
+                  <div class="control">
+                    <label class="radio">
+                      <input TYPE="Radio" id="is_violent_recid_y" name="is_violent_recid" Value="1" checked>
+                      Yes
+                    </label>
+                    <label class="radio">
+                      <input TYPE="Radio" id="is_violent_recid_n" name="is_violent_recid" Value="0">
+                      No
+                    </label>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label"> Current Charge Degree</label>
+                  <div class="control">
+                    <label class="radio">
+                      <input TYPE="Radio" id="c_charge_degree_F" name="c_charge_degree_F" Value="1" checked>
+                      Felony
+                    </label>
+                    <label class="radio">
+                      <input TYPE="Radio" id="c_charge_degree_M" name="c_charge_degree_F" Value="0">
+                      Misdemeanors
+                    </label>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Prior Charge Degree</label>
+                  <div class="control">
+                    <div class="select">
+                      <select id="r_charge_degree" name="r_charge_degree">
+                        <option value="r_charge_degree_(CO3)">C03: Robbery</option>
+                        <option value="r_charge_degree_(F1)">F1: Felony 1st Degree</option>
+                        <option value="r_charge_degree_(F2)">F2: Felony 2nd Degree</option>
+                        <option value="r_charge_degree_(F3)">F3: Felony 3rd Degree</option>
+                        <option value="r_charge_degree_(F6)">F6: Felony 6th Degree</option>
+                        <option value="r_charge_degree_(F7)">F7: Felony 7th Degree</option>
+                        <option value="r_charge_degree_(M1)">M1: Misdemeanor 1st Degree</option>
+                        <option value="r_charge_degree_(M2)">M2: Misdemeanor 2nd Degree</option>
+                        <option value="r_charge_degree_(MO3)">MO3: Misdemeanor 3rd Degree</option>
+                        <option value="r_charge_degree_None">None</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <section class="column ">
+              <form class="form">
+                <div class="field">
+                  <label class="label">Age</label>
+                  <div class="control">
+                    <input type="range" id="age" name="age" min="18" max="120" value="18" style="width: 200px"
+                      oninput="x_age.value=parseInt(age.value)">
+                    <output name="x_age" for="age"></output>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Juvenile Felonies Count</label>
+                  <div class="control">
+                    <input type="range" id="juv_fel_count" name="juv_fel_count" min="0" max="50" value="0"
+                      style="width: 200px" oninput="x_juv_fel_count.value=parseInt(juv_fel_count.value)">
+                    <output name="x_juv_fel_count" for="juv_fel_count"></output>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Juvenile Misdemeanors Count</label>
+                  <div class="control">
+                    <input type="range" id="juv_misd_count" name="juv_misd_count" min="0" max="50" value="0"
+                      style="width: 200px" oninput="x_juv_misd_count.value=parseInt(juv_misd_count.value)">
+                    <output name="x_juv_misd_count" for="juv_misd_count"></output>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Other Juvenile Convictions Count</label>
+                  <div class="control">
+                    <input type="range" id="juv_other_count" name="juv_other_count" min="0" max="50" value="0"
+                      style="width: 200px" oninput="x_juv_other_count.value=parseInt(juv_other_count.value)">
+                    <output name="x_juv_other_count" for="juv_other_count"></output>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Prior Crimes Committed Count</label>
+                  <div class="control">
+                    <input type="range" id="priors_count" name="priors_count" min="0" max="50" value="0"
+                      style="width: 200px" oninput="x_priors_count.value=parseInt(priors_count.value)">
+                    <output name="x_priors_count" for="priors_count"></output>
+                  </div>
+                </div>
+              </form>
+            </section>
+
+          </section>
+
+        </section>
+
+
+
+        <section class="column">
+          <h1 class="title">Trade-offs</h1>
+          <p>Impact how the algorthim performs by altering it's priorities</p>
+          <div class="box">
+            <label class="title is-5">Error Types: Aggressiveness of Identifying Reoffenders</label>
+            <p class="pb-2">Alter the threshold for classifying a reoffender.</p>
+            <div class="field columns">
+              <div class="column is-one-half has-text-left range-label">
+                <label class="label">Classify More Reoffenders</label>
+              </div>
+              <div class="column is-one-half has-text-right range-label">
+                <label class="label">Classify Less Reoffenders</label>
+              </div>
+            </div>
+            <form class="form mb-4">
+              <div class="field">
+                <div class="control">
+                  <input class="slider" type="range" id="fpfn" name="fpfn" min="0" max="1" value="0.5" step="0.005"
+                    oninput=" x_threshold.value=parseFloat(fpfn.value)">
+                  <b>Threshold: </b> <output name="x_threshold" for="fpfn"></output>
+                </div>
+              </div>
+            </form>
+            <div class="field columns">
+              <div class="column is-one-third has-text-left range-label">
+                <label class="subtitle is-6">People who won't reoffend might be classified wrongly</label>
+              </div>
+              <div class="column is-one-third"></div>
+              <div class="column is-one-third has-text-right range-label">
+                <label class="subtitle is-6">People who will reoffend might be classified wrongly</label>
+              </div>
+            </div>
+          </div>
+          <div class="box">
+            <label class="title is-5">Accuracy vs Balance between Races</label>
+            <p class="pb-2">Prioritise either having equal classification errors be between races, Or having a higher
+              accuracy</p>
+            <div class="field columns">
+              <div class="column is-one-half has-text-left range-label">
+                <label class="label">More Accurate</label>
+              </div>
+              <div class="column is-one-half has-text-right range-label">
+                <label class="label">More Equal Classification amongst Race</label>
+              </div>
+            </div>
+            <form class="form mb-4">
+              <div class="field">
+                <div class="control">
+                  <input class="slider" type="range" id="pareto_index" name="pareto_index" min="0" max="40" value="20"
+                    step="1" oninput=" x_pareto_index.value=parseFloat(pareto_index.value/40)">
+                  <b>Value: </b> <output name="x_pareto_index" for="pareto_index"></output>
+                </div>
+              </div>
+            </form>
+            <div class="field columns">
+              <div class="column is-one-third has-text-left range-label">
+                <label class="subtitle is-6">Increase chance of bias towards a Race</label>
+              </div>
+              <div class="column is-one-third"></div>
+              <div class="column is-one-third has-text-right range-label">
+                <label class="subtitle is-6">Increase chance of wrong classification</label>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+  <section class="section pt-0 pb-0">
+    <div class="columns is-centered">
+      <div class="column control is-half has-text-centered">
+        <button class="button is-link is-large" id="submit-button">Classify!</button>
+      </div>
+      <section class="column is-half has-text-centered">
+        <h1 class="title is-large my-0" id="prediction"></h1>
+        <span id="accuracy"> </span>
+      </section>
+    </div>
+  </section>
+
+
+  <section class="section columns py-3 is-desktop">
+    <section class="column is-one-half mr-4">
+      <div class="box">
+        <h4 class="title is-5">Feature Importance for Current Input</h4>
+        <div class="has-text-centered">
+          <div id="pie_chart" class="chart">
+            <div>
+              <i class="fas fa-chart-pie"></i>
+              <p class="title is-5">Loading Data</p>
+            </div>
+          </div>
+          <p>This pie chart shows the feature importance for a postive case (reoffend) for each feature altered above.
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class="column is-one-half ml-4">
+      <div class="box">
+        <h4 class="title is-5">Classification Performance</h4>
+        <div class="has-text-centered">
+          <div id="flowChart" class="flowChart">
+            <div class="">
+              <i class="fas fa-chart-bar"></i>
+              <p class="title is-5">Loading Data</p>
+            </div>
+          </div>
+          <p>This flowchart shows the number of predictions which were correct or not (and their type of error).
+          </p>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <section class="section py-0">
+    <section class="box">
+      <h4 class="title is-5">Feature Importance for All Inputs</h4>
+      <div class="has-text-centered">
+        <div id="line_chart" class="chart">
+          <div class="">
+            <i class="fas fa-chart-line"></i>
+            <p class="title is-5">Loading Data</p>
+          </div>
+        </div>
+        <p>This line chart shows the feature importance for a postive case (reoffend) for all previously entered feature
+          values.
+        </p>
+      </div>
+    </section>
+  </section>
+
+</section>
+<script src="{{url_for('static', filename='js/scripts.js') }}"></script>
+
+
+
+{% endblock %}

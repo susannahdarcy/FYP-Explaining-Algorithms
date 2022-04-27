@@ -1,0 +1,27 @@
+.background {
+  background-color: #f7f6fa;
+}
+.range-label {
+  padding: 0;
+}
+
+.slider {
+   width: 100%;
+}
+
+.chart {
+  width: 100%;
+  height: 250px;
+}
+
+.flowChart { 
+  height: 250px;
+  display: inline-block;
+  margin: 0 auto !important;
+}
+
+i.fas {
+   font-size: 8rem;
+   padding: 1rem;
+   color: gray;
+}
